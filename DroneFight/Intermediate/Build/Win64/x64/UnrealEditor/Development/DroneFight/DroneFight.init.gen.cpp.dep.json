@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\unreal_6-1\\dronefight\\dronefight\\intermediate\\build\\win64\\unrealeditor\\inc\\dronefight\\uht\\dronefight.init.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\unreal_6-1\\dronefight\\dronefight\\intermediate\\build\\win64\\x64\\dronefighteditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "d:\\unreal_6-1\\dronefight\\dronefight\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\dronefight\\definitions.dronefight.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

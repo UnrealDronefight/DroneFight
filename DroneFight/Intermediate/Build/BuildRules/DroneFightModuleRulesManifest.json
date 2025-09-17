@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\Unreal_6-1\\DroneFight\\DroneFight\\Source\\DroneFight\\DroneFight.Build.cs",
+		"D:\\Unreal_6-1\\DroneFight\\DroneFight\\Source\\DroneFight.Target.cs",
+		"D:\\Unreal_6-1\\DroneFight\\DroneFight\\Source\\DroneFightEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.2"
+}

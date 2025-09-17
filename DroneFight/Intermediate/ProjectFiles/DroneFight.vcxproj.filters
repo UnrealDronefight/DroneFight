@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\DroneFight.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\DroneFight.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\DroneFightEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\DroneFight">
+      <UniqueIdentifier>{708A21AF-B209-3333-B3AC-5ABAC511A5C2}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\DroneFight\DroneFight.Build.cs">
+      <Filter>Source\DroneFight</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\DroneFight\DroneFight.cpp">
+      <Filter>Source\DroneFight</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DroneFight\DroneFight.h">
+      <Filter>Source\DroneFight</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\DroneFight\DroneFightCharacter.cpp">
+      <Filter>Source\DroneFight</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DroneFight\DroneFightCharacter.h">
+      <Filter>Source\DroneFight</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\DroneFight\DroneFightGameMode.cpp">
+      <Filter>Source\DroneFight</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DroneFight\DroneFightGameMode.h">
+      <Filter>Source\DroneFight</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
