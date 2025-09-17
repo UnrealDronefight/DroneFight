@@ -6,6 +6,11 @@
 			"description": "Default Uncontrolled Changelist",
 			"files": [
 				"D:/Unreal_6-1/DroneFight/DroneFight/Content/StarterContent/Blueprints/Blueprint_CeilingLight.uasset",
+				"D:/Unreal_6-1/DroneFight/DroneFight/Content/PS_CJH/dochi.uasset",
+				"D:/Unreal_6-1/DroneFight/DroneFight/Content/PS_JHS/dochi.uasset",
+				"D:/Unreal_6-1/DroneFight/DroneFight/Content/PS_KSM/dochi.uasset",
+				"D:/Unreal_6-1/DroneFight/DroneFight/Content/PS_LHJ/dochi.uasset",
+				"D:/Unreal_6-1/DroneFight/DroneFight/Content/PS_YSH/dochi.uasset",
 				"D:/Unreal_6-1/DroneFight/DroneFight/Content/DaybytheBeach/Level/BeachRT_BuiltData.uasset",
 				"D:/Unreal_6-1/DroneFight/DroneFight/Content/DaybytheBeach/Level/Overview.umap",
 				"D:/Unreal_6-1/DroneFight/DroneFight/Content/DaybytheBeach/Level/BeachRT.umap",
