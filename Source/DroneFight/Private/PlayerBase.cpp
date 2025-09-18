@@ -2,6 +2,7 @@
 
 
 #include "PlayerBase.h"
+#include "DroneContainer.h"
 
 // Sets default values
 APlayerBase::APlayerBase()
@@ -15,7 +16,6 @@ APlayerBase::APlayerBase()
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -32,3 +32,24 @@ void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
+void APlayerBase::GenerateDroneContainer(UStaticMeshComponent* FollowPosition)
+{
+	if (!DroneContainerClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DroneContainerClass is not set"));
+		return;
+	}
+
+	_droneContainer = GetWorld()->SpawnActor<ADroneContainer>(DroneContainerClass);
+	_droneContainer->OperateDroneContainer(FollowPosition);
+}
+
+void APlayerBase::GenerateDroneInput()
+{
+	_droneContainer->GenerateDrone();
+}
+
+void APlayerBase::ChangeDroneModeInput()
+{
+	_droneContainer->ChangeDroneMode();
+}
