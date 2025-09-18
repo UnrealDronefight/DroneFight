@@ -12,18 +12,31 @@ class AEnemyBase : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AEnemyBase();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	int Max_HP;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Monster Stats")
+	int HP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	int Attack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	int Defense;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	int Speed;
+
+	// °è»êµÈ Value
+	UPROPERTY(BlueprintReadOnly, Category = "Monster Stats")
+	int Monster_Value;
+
+	void CalculateValue();
 };
