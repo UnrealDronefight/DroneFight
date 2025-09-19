@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "EnemyBase.generated.h"
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGotClose, AActor*, Nexus, bool, bClose);
 
 UCLASS()

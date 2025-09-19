@@ -33,7 +33,7 @@ void AWaveManager::Tick(float DeltaTime)
 // 몬스터 Spawn, delay 적용
 void AWaveManager::SpawnMonster()
 {
-	for (int32 index = 0; index < MonsterClassInWave.Num(); index++)
+	for (int index = 0; index < MonsterClassInWave.Num(); index++)
 	{
 		// 지연 시간 계산: index * SpawnDelay
 		float DelayTime = index * SpawnDelay;
@@ -138,51 +138,90 @@ void AWaveManager::SpawnMonsterValueInWave()
 	MonsterClassInWave.Empty();
 	int WaveValue = StartWaveValue + (CurrentWave - 1) * MultipleWaveValue;
 
+	// 키(몬스터 클래스) 목록 가져오기
 	TArray<TSubclassOf<AActor>> Keys;
 	MonsterClassValues.GetKeys(Keys);
+
+	// 반드시 "높은 밸류부터" 순회하도록 내림차순 정렬 (값이 큰 것이 먼저)
+	Keys.Sort([&](const TSubclassOf<AActor>& A, const TSubclassOf<AActor>& B) {
+		return MonsterClassValues[A] > MonsterClassValues[B]; // 내림차순
+		});
+
+	// WaveValue가 0이거나 더 이상 뺄 수 없을 때까지 반복
 	while (WaveValue > 0)
 	{
-		bool ValueReduced = false; // 이번 반복에서 값이 줄었는지 확인하는 플래그
-		for (int i = Keys.Num() - 1; i >= 0; i--)
+		bool bAnyAddedThisPass = false;    // 이번 루프에서 실제로 추가했는지
+		bool bAnyPossibleThisPass = false; // 이번 루프에서 추가 가능한 항목이 있었는지 (decideVal > 0)
+
+		// 높은 밸류부터 낮은 밸류까지 한 번 스캔
+		for (int32 i = 0; i < Keys.Num(); ++i)
 		{
 			TSubclassOf<AActor> MonsterClassKey = Keys[i];
 			int MonsterValueInWave = MonsterClassValues[MonsterClassKey];
-			if (WaveValue >= MonsterValueInWave)
+			if (MonsterValueInWave <= 0) continue;
+
+			int DecideVal = WaveValue / MonsterValueInWave; // 해당 몬스터로 몇 마리까지 가능한지
+			if (DecideVal <= 0) continue;
+
+			bAnyPossibleThisPass = true;
+
+			// 0 ~ DecideVal 사이 랜덤으로 뽑기 (0도 허용)
+			int RandomVal = FMath::RandRange(0, DecideVal) + 1;
+			for (int j = 0; j < RandomVal; ++j)
 			{
-				int decideVal = WaveValue / MonsterValueInWave;
-				int randomVal = rand() % decideVal + 1; // 1 ~ decideVal 사이의 랜덤 값
-				for (int j = 0; j < randomVal; j++)
+				MonsterClassInWave.Add(MonsterClassKey);
+			}
+			WaveValue -= RandomVal * MonsterValueInWave;
+			bAnyAddedThisPass = true;
+		}
+
+		// 한 번 훑었는데 아무것도 추가되지 않았다면
+		if (!bAnyAddedThisPass)
+		{
+			if (bAnyPossibleThisPass)
+			{
+				// 안전장치: 랜덤으로 모두 0이 나와 버려서 진행이 멈추는 케이스 방지
+				// (이 경우 가장 높은 밸류부터 가능한 한 마리씩 강제 추가해서 진행하게 함)
+				for (int i = 0; i < Keys.Num(); ++i)
 				{
-					MonsterClassInWave.Add(MonsterClassKey);
-					WaveValue -= MonsterValueInWave;
-					ValueReduced = true; // 값이 줄었음을 표시
+					TSubclassOf<AActor> MonsterClassKey = Keys[i];
+					int MonsterValueInWave = MonsterClassValues[MonsterClassKey];
+					if (MonsterValueInWave <= 0) continue;
+					if (WaveValue >= MonsterValueInWave)
+					{
+						MonsterClassInWave.Add(MonsterClassKey);
+						WaveValue -= MonsterValueInWave;
+						bAnyAddedThisPass = true;
+						break; // 한 마리 추가하고 다시 while문으로 돌아가서 재시도
+					}
 				}
-				break; // 가장 높은 밸류부터 다시 시작
+
+				// (만약 여기서도 추가 못하면 다음 if에서 빠져나옴)
+			}
+			else
+			{
+				// 이번 패스에 가능한 항목 자체가 없다면 더 이상 채울 수 없음 -> 종료
+				break;
 			}
 		}
-		if (!ValueReduced)
-		{
-			break; // 더 이상 값을 줄일 수 없으면 종료
-		}
 	}
+
 	MonsterNumInWave = MonsterClassInWave.Num();
-	ShakeMonsterList(); // 몬스터 클래스 리스트를 무작위로 섞기
+	ShakeMonsterList(); // 최종 리스트 섞기
 }
 
-// TArray로 모아놓은 MonsterClassInWave를 무작위로 섞기
+// Fisher-Yates 방식으로 안전하게 섞기
 void AWaveManager::ShakeMonsterList()
 {
- 	int Num = MonsterClassInWave.Num();
-	for (int i = 0; i < Num; i++)
+	int Num = MonsterClassInWave.Num();
+	for (int32 i = Num - 1; i > 0; --i)
 	{
-		int SwapIndex = rand() % Num;
-		if (i != SwapIndex)
-		{
-			MonsterClassInWave.Swap(i, SwapIndex);
-		}
+		int j = FMath::RandRange(0, i);
+		MonsterClassInWave.Swap(i, j);
 	}
-	//MosterClassInWave 내역 알 수 있도록 UE_LOG에 보이게 하기
-	for (int i = 0; i < MonsterClassInWave.Num(); i++)
+
+	// 디버그 로그: 결과 출력
+	for (int i = 0; i < MonsterClassInWave.Num(); ++i)
 	{
 		if (MonsterClassInWave[i])
 		{
