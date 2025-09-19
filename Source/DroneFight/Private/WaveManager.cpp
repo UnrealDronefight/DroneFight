@@ -1,17 +1,17 @@
 ﻿#include <iostream>
 #include <Windows.h>
 
-#include "SpawnManager.h"
+#include "WaveManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyBase.h"
 
 
-ASpawnManager::ASpawnManager()
+AWaveManager::AWaveManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ASpawnManager::BeginPlay()
+void AWaveManager::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -22,13 +22,13 @@ void ASpawnManager::BeginPlay()
 	BringMonsterValue();
 }
 
-void ASpawnManager::Tick(float DeltaTime)
+void AWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // ���͸� Spawn�ϴ� �Լ�
-void ASpawnManager::SpawnMonster()
+void AWaveManager::SpawnMonster()
 {
 
 	FVector SpawnLocation = SpawnPosition();
@@ -42,7 +42,7 @@ void ASpawnManager::SpawnMonster()
 }
 
 // Spawn ��ġ�� �������� ��ȯ�ϴ� �Լ�
-FVector ASpawnManager::SpawnPosition()
+FVector AWaveManager::SpawnPosition()
 {
 	int PositionNum = rand() % 4;
 	FVector ResultPos;
@@ -67,7 +67,7 @@ FVector ASpawnManager::SpawnPosition()
 }
 
 // ������ Value�� MonsterValues �迭�� �߰��ϴ� �Լ�
-void ASpawnManager::BringMonsterValue()
+void AWaveManager::BringMonsterValue()
 {
 	MonsterClassValues.Empty();
 
@@ -90,7 +90,7 @@ void ASpawnManager::BringMonsterValue()
 }
 
 //���� value���� �������� key�� �Բ� ������������ �����ϴ� �Լ�
-void ASpawnManager::LowStairLevel()
+void AWaveManager::LowStairLevel()
 {
 	TArray<TSubclassOf<AActor>> SortedKeys;
 	MonsterClassValues.GetKeys(SortedKeys);
@@ -115,7 +115,7 @@ void ASpawnManager::LowStairLevel()
 
 // ����׿� ���� Ŭ������ Value ��� �Լ�
 
-void ASpawnManager::PrintMonsterClassValues()
+void AWaveManager::PrintMonsterClassValues()
 {
 	for (auto& Elem : MonsterClassValues)
 	{
