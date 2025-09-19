@@ -1,4 +1,7 @@
 *.uasset filter=lfs diff=lfs merge=lfs -text
 *.umap filter=lfs diff=lfs merge=lfs -text
+<<<<<<< HEAD
 .venom filter=lfs diff=lfs merge=lfs -text
 .venorm filter=lfs diff=lfs merge=lfs -text
+=======
+>>>>>>> 77ffc9c394ab8f5182d4f80fd7bea377673b3581
