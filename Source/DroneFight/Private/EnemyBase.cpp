@@ -19,3 +19,8 @@ void AEnemyBase::CalculateValue()
 {
 	Monster_Value = Max_HP + Attack + Defense + Speed;
 }
+
+void AEnemyBase::Initialize_GotClose(bool IsClose, AActor* NexusObject)
+{
+	GotClose.Broadcast(NexusObject, IsClose);
+}
