@@ -74,3 +74,6 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 /Content/Imports/VictorianStreet
+
+# Unreal Engine Imports 폴더 무시
+Content/Imports/
