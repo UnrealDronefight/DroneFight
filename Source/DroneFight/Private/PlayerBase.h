@@ -14,6 +14,12 @@ class APlayerBase : public ADroneFightCharacter
 public:
 	// Sets default values for this character's properties
 	APlayerBase();
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Drone Container")
+	TSubclassOf<class ADroneContainer> DroneContainerClass;
+
+	UPROPERTY()
+	class ADroneContainer* _droneContainer = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,4 +32,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Drone Container")
+	void GenerateDroneContainer(UStaticMeshComponent* FollowPosition);
+
+	UFUNCTION(BlueprintCallable, Category = "Drone Container")
+	void GenerateDroneInput();
+
+	UFUNCTION(BlueprintCallable, Category = "Drone Container")
+	void ChangeDroneModeInput();
 };
