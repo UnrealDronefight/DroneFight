@@ -77,5 +77,8 @@ DerivedDataCache/*
 #ignore ParagonMinions
 Content/ParagonMinions/
 
+#ignore Rampage
+Content/Rampage/
+
 #ignore assets in Imports
 Content/Imports/
