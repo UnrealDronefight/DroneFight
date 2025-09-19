@@ -1,34 +1,34 @@
-#include <iostream>
+﻿#include <iostream>
 #include <Windows.h>
 
-#include "WaveManager.h"
+#include "SpawnManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyBase.h"
 
 
-AWaveManager::AWaveManager()
+ASpawnManager::ASpawnManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void AWaveManager::BeginPlay()
+void ASpawnManager::BeginPlay()
 {
 	Super::BeginPlay();
 
 	srand((unsigned int)time(NULL));
 
-	CurrentWave = 1;// Wave ????
+	CurrentWave = 1;// Wave �ʱ�ȭ
 
 	BringMonsterValue();
 }
 
-void AWaveManager::Tick(float DeltaTime)
+void ASpawnManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// ????? Spawn??? ???
-void AWaveManager::SpawnMonster()
+// ���͸� Spawn�ϴ� �Լ�
+void ASpawnManager::SpawnMonster()
 {
 
 	FVector SpawnLocation = SpawnPosition();
@@ -41,8 +41,8 @@ void AWaveManager::SpawnMonster()
 	CurrentWave++;
 }
 
-// Spawn ????? ???????? ?????? ???
-FVector AWaveManager::SpawnPosition()
+// Spawn ��ġ�� �������� ��ȯ�ϴ� �Լ�
+FVector ASpawnManager::SpawnPosition()
 {
 	int PositionNum = rand() % 4;
 	FVector ResultPos;
@@ -66,8 +66,8 @@ FVector AWaveManager::SpawnPosition()
 
 }
 
-// ?????? Value?? MonsterValues ?��?? ?????? ???
-void AWaveManager::BringMonsterValue()
+// ������ Value�� MonsterValues �迭�� �߰��ϴ� �Լ�
+void ASpawnManager::BringMonsterValue()
 {
 	MonsterClassValues.Empty();
 
@@ -77,7 +77,7 @@ void AWaveManager::BringMonsterValue()
 	{
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(MonsterClass[index], SpawnLocation, FRotator::ZeroRotator);
 
-		// EnemyBase?? ��????
+		// EnemyBase�� ĳ����
 		AEnemyBase* Enemy = Cast<AEnemyBase>(SpawnedActor);
 		if (Enemy)
 		{
@@ -89,16 +89,16 @@ void AWaveManager::BringMonsterValue()
 	LowStairLevel();
 }
 
-//???? value???? ???????? key?? ??? ???????????? ??????? ???
-void AWaveManager::LowStairLevel()
+//���� value���� �������� key�� �Բ� ������������ �����ϴ� �Լ�
+void ASpawnManager::LowStairLevel()
 {
 	TArray<TSubclassOf<AActor>> SortedKeys;
 	MonsterClassValues.GetKeys(SortedKeys);
 	SortedKeys.Sort([this](const TSubclassOf<AActor>& A, const TSubclassOf<AActor>& B)
 		{
-			return MonsterClassValues[A] > MonsterClassValues[B]; // ???????? ????
+			return MonsterClassValues[A] > MonsterClassValues[B]; // �������� ����
 		});
-	// ????? ????? ??? (??????)
+	// ���ĵ� ����� ��� (����׿�)
 	for (const TSubclassOf<AActor>& Key : SortedKeys)
 	{
 		int Value = MonsterClassValues[Key];
@@ -108,14 +108,14 @@ void AWaveManager::LowStairLevel()
 			UE_LOG(LogTemp, Warning, TEXT("Monster Class: %s, Value: %d"), *ClassName, Value);
 		}
 	}
-	// ????? ? ?��?? ?????? MonsterClass ?��?? ????
+	// ���ĵ� Ű �迭�� ����Ͽ� MonsterClass �迭�� �籸��
 	MonsterClass = SortedKeys;
 }
 
 
-// ?????? ???? ??????? Value ??? ???
+// ����׿� ���� Ŭ������ Value ��� �Լ�
 
-void AWaveManager::PrintMonsterClassValues()
+void ASpawnManager::PrintMonsterClassValues()
 {
 	for (auto& Elem : MonsterClassValues)
 	{
@@ -124,10 +124,10 @@ void AWaveManager::PrintMonsterClassValues()
 
 		if (MonsterUClass)
 		{
-			FString classname = MonsterUClass->GetName(); // ????? ??? ????????
+			FString classname = MonsterUClass->GetName(); // Ŭ���� �̸� ��������
 			UE_LOG(LogTemp, Warning, TEXT("monster class: %s, value: %d"), *classname, value);
 
-			// ??? ???? ??????
+			// ȭ�鿡 ���� ������
 			if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, classname + " value: " + FString::FromInt(value));

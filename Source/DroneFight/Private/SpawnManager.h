@@ -2,13 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "WaveManager.generated.h"
+#include "SpawnManager.generated.h"
 
 UCLASS()
-class AWaveManager : public AActor
+class ASpawnManager : public AActor
 {
 	GENERATED_BODY()
-	AWaveManager();
+	ASpawnManager();
 
 private:
 	int CurrentWave;
