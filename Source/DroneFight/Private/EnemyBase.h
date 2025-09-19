@@ -5,40 +5,38 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "EnemyBase.generated.h"
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGotClose, AActor*, Nexus, bool, bClose);
 
 UCLASS()
 class AEnemyBase : public ACharacter
 {
 	GENERATED_BODY()
-
-public:
 	AEnemyBase();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Monster Stats")
 	int Max_HP;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Monster Stats")
 	int HP;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Monster Stats")
 	int Attack;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Monster Stats")
 	int Defense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Monster Stats")
 	int Speed;
 
 	// °è»êµÈ Value
-	UPROPERTY(BlueprintReadOnly, Category = "Monster Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Monster Stats")
 	int Monster_Value;
 
+	UFUNCTION()
 	void CalculateValue();
 
 
@@ -58,4 +56,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Monster Events")
 	void Initialize_GotClose(bool IsClose, AActor* NexusObject);
+
+public:
+	int GetValue() { return Monster_Value; }
 };

@@ -4,7 +4,6 @@
 AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
 }
 
 void AEnemyBase::BeginPlay()

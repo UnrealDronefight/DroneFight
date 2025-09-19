@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "EnemyBase.h"
 #include "WaveManager.generated.h"
 
 UCLASS()
@@ -23,7 +24,7 @@ public:
 	// 스폰 할 몬스터 클래스를 T 배열로 세팅
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Setting")
-	TArray<TSubclassOf<AActor>> MonsterClass;
+	TArray<TSubclassOf<AEnemyBase>> MonsterClass;
 
 	////////////////////////////////////////////////////////////////////////////
 
