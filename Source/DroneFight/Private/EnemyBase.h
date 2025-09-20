@@ -18,8 +18,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
 	int Max_HP;
 
@@ -58,4 +56,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Monster Events")
 	void Initialize_GotClose(bool IsClose, AActor* NexusObject);
+
+public :
+	int GetValue = Monster_Value;
 };
