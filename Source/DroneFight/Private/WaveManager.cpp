@@ -50,9 +50,15 @@ void AWaveManager::SpawnMonster()
 					GetWorld()->SpawnActor<AActor>(MonsterClassInWave[index], SpawnLoc, SpawnRot);
 				}
 			});
-
+		if (index == 0)
+		{
+			FVector SpawnLoc = SpawnPosition();
+			FRotator SpawnRot = FRotator::ZeroRotator;
+			GetWorld()->SpawnActor<AActor>(MonsterClassInWave[index], SpawnLoc, SpawnRot);
+		}
+		else
 		// 타이머 예약
-		GetWorld()->GetTimerManager().SetTimer(TempHandle, Delegate, DelayTime, false);
+			GetWorld()->GetTimerManager().SetTimer(TempHandle, Delegate, DelayTime, false);
 	}
 }
 
@@ -85,10 +91,15 @@ FVector AWaveManager::SpawnPosition()
 // 몬스터 Value를 가져오는 함수
 void AWaveManager::BringMonsterValue()
 {
+	//MonsterClassValues = 몬스터 Class와 몬스터 Value를 각각 Key값과 Value값으로 보유 중인 Map함수
 	MonsterClassValues.Empty();
 
+	// 몬스터의 스폰 로케이션을 받기 위한 맵 밖에 임시 스폰
 	FVector SpawnLocation = FVector(5000.f, 5000.f, 5000.f);
+	//Actor클래스를 포인터로 받아들인 SpawnedActor변수 선언
 	AActor* SpawnedActor;
+
+	//Map함수에 넣을 class의 수는 MonsterClass.Num으로 받아서 넣는 작업
 	for (int index = 0; index < MonsterClass.Num(); index++)
 	{
 		SpawnedActor = GetWorld()->SpawnActor<AActor>(MonsterClass[index], SpawnLocation, FRotator::ZeroRotator);
@@ -135,11 +146,15 @@ void AWaveManager::WaveEnd() { WaveStart(); }
 //이런식으로 웨이브 밸류가 0이 되거나 더 뺄 수 없을 때까지 반복
 void AWaveManager::SpawnMonsterValueInWave()
 {
-	MonsterClassInWave.Empty();
+	MonsterClassInWave.Empty();//현재 웨이브의 MonsterClassInWave를 NULL값으로 초기화
+
+	// 현재 웨이브 밸류 = 웨이브 1의 밸류 + (현재 웨이브가 몇번째 웨이브인지 - 1) * 등차밸류
 	int WaveValue = StartWaveValue + (CurrentWave - 1) * MultipleWaveValue;
 
-	// 키(몬스터 클래스) 목록 가져오기
+	// 키(몬스터 클래스) 목록을 Keys라는 배열 변수로 전부 가져오기
 	TArray<TSubclassOf<AActor>> Keys;
+
+	//MonsterClassValues에 소환 시킬 키(모든 클래스)를 넣기
 	MonsterClassValues.GetKeys(Keys);
 
 	// 반드시 "높은 밸류부터" 순회하도록 내림차순 정렬 (값이 큰 것이 먼저)
@@ -154,19 +169,29 @@ void AWaveManager::SpawnMonsterValueInWave()
 		bool bAnyPossibleThisPass = false; // 이번 루프에서 추가 가능한 항목이 있었는지 (decideVal > 0)
 
 		// 높은 밸류부터 낮은 밸류까지 한 번 스캔
-		for (int32 i = 0; i < Keys.Num(); ++i)
+		for (int i = 0; i < Keys.Num(); ++i)
 		{
+			// Class변수 MonsterClassKey에 Keys[]를 초기화
 			TSubclassOf<AActor> MonsterClassKey = Keys[i];
+
+			// MonsterValueInWave에 현 Class의 밸류값을 넣어줌
 			int MonsterValueInWave = MonsterClassValues[MonsterClassKey];
+			
+			// 넣어준 키가 NULL값, 즉 없는 값이면 이 전체 과정을 무시하고 다음 키의 넘버로
 			if (MonsterValueInWave <= 0) continue;
 
-			int DecideVal = WaveValue / MonsterValueInWave; // 해당 몬스터로 몇 마리까지 가능한지
+			// 해당 몬스터로 몇 마리까지 가능한지 현 웨이브의 밸류 / 현재 점 찍은 몬스터의 밸류값
+			int DecideVal = WaveValue / MonsterValueInWave; 
+
+			// 넣어준 밸류가 0보다 작거나 같은 즉 무시해도 되는 과정이면 이 전체 과정을 무시하고 다음 키의 넘버로
 			if (DecideVal <= 0) continue;
 
 			bAnyPossibleThisPass = true;
 
 			// 0 ~ DecideVal 사이 랜덤으로 뽑기 (0도 허용)
-			int RandomVal = FMath::RandRange(0, DecideVal) + 1;
+			int RandomVal = rand() % (DecideVal +1);
+
+			// 그렇게 구한 소환할 몬스터, 개수를 구한 후 MonsterClassInWave에 더한다
 			for (int j = 0; j < RandomVal; ++j)
 			{
 				MonsterClassInWave.Add(MonsterClassKey);
@@ -182,7 +207,7 @@ void AWaveManager::SpawnMonsterValueInWave()
 			{
 				// 안전장치: 랜덤으로 모두 0이 나와 버려서 진행이 멈추는 케이스 방지
 				// (이 경우 가장 높은 밸류부터 가능한 한 마리씩 강제 추가해서 진행하게 함)
-				for (int i = 0; i < Keys.Num(); ++i)
+				for (int i = Keys.Num()-1; i >= 0 ; --i)
 				{
 					TSubclassOf<AActor> MonsterClassKey = Keys[i];
 					int MonsterValueInWave = MonsterClassValues[MonsterClassKey];

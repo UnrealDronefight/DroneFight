@@ -58,5 +58,5 @@ protected:
 	void Initialize_GotClose(bool IsClose, AActor* NexusObject);
 
 public :
-	int GetValue = Monster_Value;
+	int GetValue;
 };

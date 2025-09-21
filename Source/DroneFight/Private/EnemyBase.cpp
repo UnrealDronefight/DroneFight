@@ -11,8 +11,9 @@ void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 	HP = Max_HP;
-
+	
 	CalculateValue();
+	GetValue = Monster_Value;
 }
 
 void AEnemyBase::CalculateValue()
