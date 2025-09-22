@@ -79,3 +79,5 @@ Content/ParagonMinions/
 
 #ignore assets in Imports
 Content/Imports/
+
+#ignore Content/PS_KSM/Monster/
