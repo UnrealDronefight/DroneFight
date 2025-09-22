@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "TimerManager.h" // FTimerHandle
 #include "EnemyBase.generated.h"
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGotClose, AActor*, Nexus, bool, bClose);
 
 UCLASS()
 class AEnemyBase : public ACharacter
@@ -14,9 +14,12 @@ class AEnemyBase : public ACharacter
 
 public:
 	AEnemyBase();
+	AWaveManager* _playerController = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
+
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Stats")
 	int Max_HP;
@@ -39,11 +42,7 @@ protected:
 
 	void CalculateValue();
 
-
-
-	// 이벤트 디스패쳐 관련
-	UPROPERTY(BlueprintAssignable, Category = "Monster Events")
-	FGotClose GotClose;
+	//------------------------------------------------------------------------
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Events")
 	bool Close;
@@ -51,12 +50,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Events")
 	bool Hit;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Events")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster Events", meta = (ExposeOnSpawn = true))
 	AActor* Nexus;
 
 	UFUNCTION(BlueprintCallable, Category = "Monster Events")
-	void Initialize_GotClose(bool IsClose, AActor* NexusObject);
 
-public :
-	int GetValue;
+	void InitializeEnemy(AWaveManager* myown);
+
+	UFUNCTION(BlueprintCallable, Category = "Monster Events")
+
+	void DestroySelf();//5초 후 자신 삭제
+
+private:
+	FTimerHandle DestroyTimerHandle;
 };
