@@ -94,4 +94,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn Control")
 		float SpawnDelay = 1.0f;
 
+	public :
+		void MonsterDeath();
 };

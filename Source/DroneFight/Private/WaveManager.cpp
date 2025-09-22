@@ -1,7 +1,8 @@
+#include "WaveManager.h"
+
 #include <iostream>
 #include <Windows.h>
 
-#include "WaveManager.h"
 #include "Kismet/GameplayStatics.h"
 
 AWaveManager::AWaveManager()
@@ -24,11 +25,14 @@ void AWaveManager::BeginPlay()
 void AWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AWaveManager::MonsterDeath()
+{
+	MonsterNumInWave--;
 	if (MonsterNumInWave <= 0)
 		WaveEnd();
 }
-
 
 // 몬스터 Spawn, delay 적용
 void AWaveManager::SpawnMonster()
@@ -47,7 +51,11 @@ void AWaveManager::SpawnMonster()
 					FVector SpawnLoc = SpawnPosition();
 					FRotator SpawnRot = FRotator::ZeroRotator;
 
-					GetWorld()->SpawnActor<AActor>(MonsterClassInWave[index], SpawnLoc, SpawnRot);
+					AEnemyBase* Enemy = GetWorld()->SpawnActor<AEnemyBase>(MonsterClassInWave[index], SpawnLoc, SpawnRot);
+					if (Enemy)
+					{
+						Enemy->InitializeEnemy(this);
+					}
 				}
 			});
 		if (index == 0)
@@ -97,18 +105,15 @@ void AWaveManager::BringMonsterValue()
 	// 몬스터의 스폰 로케이션을 받기 위한 맵 밖에 임시 스폰
 	FVector SpawnLocation = FVector(5000.f, 5000.f, 5000.f);
 	//Actor클래스를 포인터로 받아들인 SpawnedActor변수 선언
-	AActor* SpawnedActor;
+	AEnemyBase* SpawnedActor;
 
 	//Map함수에 넣을 class의 수는 MonsterClass.Num으로 받아서 넣는 작업
 	for (int index = 0; index < MonsterClass.Num(); index++)
 	{
-		SpawnedActor = GetWorld()->SpawnActor<AActor>(MonsterClass[index], SpawnLocation, FRotator::ZeroRotator);
-
-		// EnemyBase로 캐스팅하여 Monster_Value 접근
-		AEnemyBase* Enemy = Cast<AEnemyBase>(SpawnedActor);
-		if (Enemy)
+		SpawnedActor = GetWorld()->SpawnActor<AEnemyBase>(MonsterClass[index], SpawnLocation, FRotator::ZeroRotator);
+		if (SpawnedActor)
 		{
-			MonsterClassValues.Add(MonsterClass[index], Enemy->GetValue);
+			MonsterClassValues.Add(MonsterClass[index], SpawnedActor->Monster_Value);
 		}
 		SpawnedActor->Destroy();
 	}
@@ -197,38 +202,14 @@ void AWaveManager::SpawnMonsterValueInWave()
 				MonsterClassInWave.Add(MonsterClassKey);
 			}
 			WaveValue -= RandomVal * MonsterValueInWave;
-			bAnyAddedThisPass = true;
 		}
 
-		// 한 번 훑었는데 아무것도 추가되지 않았다면
-		if (!bAnyAddedThisPass)
+		TSubclassOf<AActor> MonsterKey = Keys[Keys.Num()-1];
+		if (WaveValue < MonsterClassValues[MonsterKey])
 		{
-			if (bAnyPossibleThisPass)
-			{
-				// 안전장치: 랜덤으로 모두 0이 나와 버려서 진행이 멈추는 케이스 방지
-				// (이 경우 가장 높은 밸류부터 가능한 한 마리씩 강제 추가해서 진행하게 함)
-				for (int i = Keys.Num()-1; i >= 0 ; --i)
-				{
-					TSubclassOf<AActor> MonsterClassKey = Keys[i];
-					int MonsterValueInWave = MonsterClassValues[MonsterClassKey];
-					if (MonsterValueInWave <= 0) continue;
-					if (WaveValue >= MonsterValueInWave)
-					{
-						MonsterClassInWave.Add(MonsterClassKey);
-						WaveValue -= MonsterValueInWave;
-						bAnyAddedThisPass = true;
-						break; // 한 마리 추가하고 다시 while문으로 돌아가서 재시도
-					}
-				}
-
-				// (만약 여기서도 추가 못하면 다음 if에서 빠져나옴)
-			}
-			else
-			{
-				// 이번 패스에 가능한 항목 자체가 없다면 더 이상 채울 수 없음 -> 종료
-				break;
-			}
+			break;
 		}
+		
 	}
 
 	MonsterNumInWave = MonsterClassInWave.Num();
@@ -239,7 +220,9 @@ void AWaveManager::SpawnMonsterValueInWave()
 void AWaveManager::ShakeMonsterList()
 {
 	int Num = MonsterClassInWave.Num();
-	for (int32 i = Num - 1; i > 0; --i)
+	//TestLog는 디버그용으로 모든 밸류 값을 다 더한 값
+	int TestLog = 0;
+	for (int i = Num - 1; i > 0; --i)
 	{
 		int j = FMath::RandRange(0, i);
 		MonsterClassInWave.Swap(i, j);
@@ -250,10 +233,12 @@ void AWaveManager::ShakeMonsterList()
 	{
 		if (MonsterClassInWave[i])
 		{
+			TestLog += MonsterClassValues[MonsterClassInWave[i]];
 			FString ClassName = MonsterClassInWave[i]->GetName();
 			UE_LOG(LogTemp, Warning, TEXT("Shuffled Monster %d: %s"), i + 1, *ClassName);
 		}
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Total Monster Value in Wave: %d"), TestLog);
 }
 
 
