@@ -46,9 +46,9 @@
 ---
 
 ### ⚔️ 주요 시스템 (Core Systems)
-[4방향 스폰] ──> [몬스터 이동] ──> [넥서스 방어 (10,000 HP)]
-│
-[Wave 5 클리어] <── [보스 처치] <── [WARNING: 보스 스킬 (전체 버프)]
+[4방향 스폰] ──> [몬스터 이동] ──> [넥서스 방어 (10,000 HP)] ->
+
+[WARNING: 보스 스킬 (전체 버프)] -> [보스 처치] -> [Wave 5 클리어]
 
 1. **넥서스 방어:** 맵 중앙에 위치한 넥서스(10,000 HP)가 파괴되지 않도록 방어해야 합니다.
 2. **웨이브 시스템:** 총 5개의 웨이브로 구성되어 있으며, 시작/종료 웨이브 설정이 가능합니다.
@@ -61,8 +61,11 @@
 
 ## 🖼️ 게임 화면 (Screenshots)
 
-<details>
+**드론을 이용한 공격**
 <img width="1041" height="581" alt="image" src="https://github.com/user-attachments/assets/206c96ac-41bf-4995-8b29-ca79435db175" />
-</details>
+
+**보스 몬스터 스킬 사용 시 다른 몬스터 능력치 상승**
+<img width="816" height="459" alt="image" src="https://github.com/user-attachments/assets/ab1b0cb0-617b-41db-8d17-5b83d212d9fe" />
+
 
 <br/>
