@@ -69,3 +69,6 @@
 
 
 <br/>
+### 🔍 추가 연구 및 최적화 (Further Research)
+
+[Drone Defense Rendering Optimization Report.pptx](https://github.com/user-attachments/files/31845277/Drone.Defense.Rendering.Optimization.Report.pptx)
