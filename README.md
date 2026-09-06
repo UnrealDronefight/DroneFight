@@ -5,7 +5,7 @@
 
 <br/>
 
-## 📌 프로젝트 개요 (Overview)
+## 📌 1. 프로젝트 개요 (Overview)
 
 - **개발 기간:** 4주
 - **엔진/언어:** Unreal Engine 5.3, C++ / Blueprint
@@ -17,7 +17,7 @@
 
 <br/>
 
-## 👥 팀원 및 역할 (Team & Roles)
+## 👥 2. 팀원 및 역할 (Team & Roles)
 
 | 프로필 | 이름 | 담당 역할 | 주요 구현 내용 |
 | :---: | :---: | :---: | :--- |
@@ -29,7 +29,7 @@
 
 <br/>
 
-## 🎮 게임 플레이 및 조작법 (How to Play)
+## 🎮 3. 게임 플레이 및 조작법 (How to Play)
 
 ### 🕹️ 조작키 (Controls)
 - `마우스 좌클릭`: 플레이어 기본 총기 사격
@@ -59,7 +59,7 @@
 
 <br/>
 
-## 🖼️ 게임 화면 (Screenshots)
+## 🖼️ 4. 게임 화면 (Screenshots)
 
 **드론을 이용한 공격**
 <img width="1041" height="581" alt="image" src="https://github.com/user-attachments/assets/206c96ac-41bf-4995-8b29-ca79435db175" />
@@ -68,9 +68,20 @@
 <img width="816" height="459" alt="image" src="https://github.com/user-attachments/assets/ab1b0cb0-617b-41db-8d17-5b83d212d9fe" />
 
 
+---
+
 <br/>
 
-## 🔍 추가 연구 (렌더링 최적화) (Further Research)
+## 🎬 5. 시연 영상 (Demo Video)
+
+[![드론디펜스 시연 영상](https://img.youtube.com/vi/Yx5WeOaiU18/0.jpg)](https://youtu.be/Yx5WeOaiU18)
+* 🔗 **YouTube 링크**: [Drone Defense 시연 영상 보러가기]([https://youtu.be/Yx5WeOaiU18])
+
+---
+
+<br/>
+
+## 🔍 6. 추가 연구 (렌더링 최적화) (Further Research)
 
 📋[Drone Defense 렌더링 최적화 보고서.pptx](https://github.com/user-attachments/files/31877948/Drone.Defense.pptx)
 
